@@ -1,14 +1,20 @@
-import PokemonList from "./components/PokemonList.jsx";
-import SearchForm from "./components/SearchForm.jsx";
+import { HashRouter, Link, Route, Routes } from "react-router-dom";
+import DetailPage from "./pages/DetailPage.jsx";
+import ListPage from "./pages/ListPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
   return (
-    <main className="app">
-      <h1>Pokédex Mini</h1>
-      <p>Discover the original Pokémon of the Kanto region.</p>
-      <SearchForm />
-      <PokemonList />
-    </main>
+    <HashRouter>
+      <div className="app">
+        <header><Link to="/"><h1>Pokédex Mini</h1></Link></header>
+        <Routes>
+          <Route path="/" element={<ListPage />} />
+          <Route path="/pokemon/:name" element={<DetailPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
+    </HashRouter>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function getIdFromUrl(url) {
   return url.split("/").filter(Boolean).at(-1);
@@ -39,9 +40,11 @@ function PokemonList() {
         const id = getIdFromUrl(pokemon.url);
         return (
           <li key={pokemon.name}>
-            <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`} alt="" width="64" height="64" />
-            <span>#{id.padStart(3, "0")}</span>
-            <strong>{pokemon.name}</strong>
+            <Link to={`/pokemon/${pokemon.name}`}>
+              <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`} alt="" width="64" height="64" />
+              <span>#{id.padStart(3, "0")}</span>
+              <strong>{pokemon.name}</strong>
+            </Link>
           </li>
         );
       })}

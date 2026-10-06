@@ -19,6 +19,7 @@ h1 { color: #d9363e; }
 
 .pokemon-list { list-style: none; padding: 0; display: grid; gap: 10px; }
 .pokemon-list li { display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-radius: 12px; background: white; }
+.pokemon-list li > a { display: flex; align-items: center; gap: 14px; width: 100%; color: inherit; text-decoration: none; }
 .pokemon-list strong { text-transform: capitalize; }
 .status { padding: 28px; text-align: center; color: #6d6760; }
 .status-error { color: #b5232b; }
@@ -28,3 +29,9 @@ h1 { color: #d9363e; }
 .search input { flex: 1; min-width: 0; padding: 12px; border: 1px solid #bbb; border-radius: 8px; }
 .search button { border: 0; border-radius: 8px; padding: 0 20px; background: #202022; color: white; font-weight: 700; }
 .search-result { display: flex; align-items: center; gap: 12px; text-transform: capitalize; }
+.app > header a { text-decoration: none; }
+.detail { text-align: center; }
+.detail img { margin: 20px auto; }
+.detail h2, .detail p { text-transform: capitalize; }
+.detail ul { max-width: 360px; margin: 24px auto; padding: 0; list-style: none; }
+.detail li { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #ddd; text-transform: capitalize; }
