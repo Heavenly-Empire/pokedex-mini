@@ -107,7 +107,7 @@ img { display: block; max-width: 100%; }
 .quick-facts dd { margin: 5px 0 0; font: 800 1.05rem "Figtree"; }
 .artwork-stage { position: relative; align-self: stretch; display: grid; place-items: center; overflow: hidden; }
 .artwork-stage::before { content: ""; position: absolute; width: 390px; height: 390px; border: 1px solid color-mix(in srgb, var(--type) 55%, transparent); border-radius: 50%; box-shadow: 0 0 0 55px rgba(255,255,255,.16), 0 0 0 56px color-mix(in srgb, var(--type) 20%, transparent); }
-.artwork-stage > span { position: absolute; font: 800 clamp(7rem, 17vw, 14rem)/1 "Figtree"; color: rgba(255,255,255,.6); letter-spacing: -.08em; }
+
 .artwork-stage img { position: relative; z-index: 1; width: min(430px, 85%); height: min(430px, 85%); object-fit: contain; filter: drop-shadow(0 30px 28px rgba(50,38,32,.2)); animation: detail-in .7s both; }
 .detail-data { display: grid; grid-template-columns: 1.35fr .65fr; gap: 70px; padding: 80px 5% 20px; }
 .stat-list { list-style: none; margin: 30px 0 0; padding: 0; }
