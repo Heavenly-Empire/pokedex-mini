@@ -2,6 +2,8 @@
 
 A responsive React Pokédex for the original 151 Pokémon. The project uses PokéAPI, nested React Router routes, cleanup-safe data fetching, controlled search, client-side filtering, and GitHub Pages deployment.
 
+**Live website:** [heavenly-empire.github.io/pokedex-mini](https://heavenly-empire.github.io/pokedex-mini/)
+
 ## Run locally
 
 ```bash
