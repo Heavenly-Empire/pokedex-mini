@@ -11,8 +11,8 @@ A responsive Pokédex built with React, Vite, React Router, and PokéAPI. Browse
 3. **Filter:** use **Filter 151 Pokémon** above the cards to narrow the collection by part of a name or an exact number, such as `pika`, `25`, or `#25`. The count updates as you type. Filtering happens locally without another API request.
 4. **Discover:** select **Surprise me** to open a random entry from the original 151.
 5. **Explore an entry:** view its types, height, weight, base experience, abilities, and six base stats. The stat bars and total make entries easier to compare as you browse.
-6. **Save a favorite:** select **Save favorite** on an entry; select it again to remove the favorite. Favorites are stored in this browser using local storage and persist after a refresh. They are not synced between devices, and there is no separate favorites list.
-7. **Return:** select **← Back**, the **Pokédex Mini** logo, or your browser's Back button to return to the collection.
+6. **Save a favorite:** select **Save favorite** on an entry; select it again to remove the favorite. Favorites are stored in this browser using local storage and persist after a refresh. They are not synced between devices, and there is no separate favorites list. If browser storage is blocked or full, a message explains that the change could not be saved.
+7. **Return:** select **← Back** or the **Pokédex Mini** logo to return to the collection. Your browser's Back button returns to the previous page in your browsing history, which may be another entry or a different website.
 
 You can bookmark or share a detail URL, such as `/#/pokemon/pikachu`, and refresh it directly. The collection covers Generation I; name/number search can also open other Pokémon returned by PokéAPI. Artwork floats gently and reacts to card hover or keyboard focus. Animations respect your device's reduced-motion preference.
 
@@ -37,6 +37,7 @@ src/
 ├── App.jsx                  # HashRouter and nested routes
 ├── config.js                # API/artwork URLs and collection limit
 ├── utils.js                 # Shared ID, image, and display helpers
+├── favorites.js             # Validated browser storage for favorites
 ├── index.css                # Responsive styling and animations
 ├── components/
 │   ├── Layout.jsx           # Shared header, footer, and Outlet
@@ -64,6 +65,7 @@ The finished app extends the tutorial's initial 20-entry list to 151 entries and
 
 ```bash
 npm run lint
+npm test
 npm run build
 npm run preview
 ```
