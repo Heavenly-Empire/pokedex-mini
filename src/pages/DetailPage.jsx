@@ -1,44 +1,114 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { API_BASE_URL } from "../config.js";
-import { capitalize } from "../utils.js";
+import { capitalize, formatId } from "../utils.js";
 
 function DetailPage() {
   const { name } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("pokedex-favorites")) ?? [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     let isCurrent = true;
+
     async function loadPokemon() {
       setIsLoading(true);
       setError("");
+      setPokemon(null);
       try {
         const response = await fetch(`${API_BASE_URL}/pokemon/${name}`);
         if (!response.ok) throw new Error(`No Pokémon named “${name}” was found.`);
         const data = await response.json();
-        if (isCurrent) setPokemon(data);
+        if (isCurrent) {
+          setPokemon(data);
+          document.title = `${capitalize(data.name)} · Pokédex Mini`;
+        }
       } catch (requestError) {
         if (isCurrent) setError(requestError.message);
       } finally {
         if (isCurrent) setIsLoading(false);
       }
     }
+
     loadPokemon();
-    return () => { isCurrent = false; };
+    return () => {
+      isCurrent = false;
+      document.title = "Pokédex Mini";
+    };
   }, [name]);
 
-  if (isLoading) return <p className="status">Loading {name}…</p>;
-  if (error) return <p className="status status-error">{error}</p>;
+  if (isLoading) return <div className="state-card detail-state"><span className="loader" /><p>Finding {name}…</p></div>;
+  if (error) return <div className="state-card detail-state error-state"><b>Pokémon not found</b><p>{error}</p><Link to="/">Return to the Pokédex</Link></div>;
+
+  const artwork = pokemon.sprites.other["official-artwork"].front_default;
+  const total = pokemon.stats.reduce((sum, stat) => sum + stat.base_stat, 0);
+  const isFavorite = favorites.includes(pokemon.id);
+
+  function toggleFavorite() {
+    const nextFavorites = isFavorite
+      ? favorites.filter((id) => id !== pokemon.id)
+      : [...favorites, pokemon.id];
+    setFavorites(nextFavorites);
+    localStorage.setItem("pokedex-favorites", JSON.stringify(nextFavorites));
+  }
 
   return (
-    <article className="detail">
-      <Link to="/">← Back to list</Link>
-      <img src={pokemon.sprites.other["official-artwork"].front_default} alt={pokemon.name} width="260" height="260" />
-      <h2>{capitalize(pokemon.name)}</h2>
-      <p>{pokemon.types.map(({ type }) => type.name).join(", ")}</p>
-      <ul>{pokemon.stats.map(({ base_stat: value, stat }) => <li key={stat.name}><span>{stat.name}</span><strong>{value}</strong></li>)}</ul>
+    <article className={`detail-page type-${pokemon.types[0].type.name}`}>
+      <Link to="/" className="back-link">← Back to Kanto</Link>
+      <div className="detail-hero">
+        <div className="detail-copy">
+          <p className="eyebrow">Pokédex entry {formatId(pokemon.id)}</p>
+          <h1>{capitalize(pokemon.name)}</h1>
+          <div className="type-row">
+            {pokemon.types.map(({ type }) => <span key={type.name}>{capitalize(type.name)}</span>)}
+          </div>
+          <button className={`favorite-button${isFavorite ? " is-favorite" : ""}`} type="button" onClick={toggleFavorite} aria-pressed={isFavorite}>
+            <span aria-hidden="true">{isFavorite ? "♥" : "♡"}</span>
+            {isFavorite ? "Saved to favorites" : "Save favorite"}
+          </button>
+          <dl className="quick-facts">
+            <div><dt>Height</dt><dd>{pokemon.height / 10} m</dd></div>
+            <div><dt>Weight</dt><dd>{pokemon.weight / 10} kg</dd></div>
+            <div><dt>Base XP</dt><dd>{pokemon.base_experience ?? "—"}</dd></div>
+          </dl>
+        </div>
+        <div className="artwork-stage">
+          <span>{formatId(pokemon.id)}</span>
+          <img src={artwork} alt={pokemon.name} width="430" height="430" />
+        </div>
+      </div>
+      <section className="detail-data">
+        <div>
+          <p className="eyebrow">Battle profile</p>
+          <h2>Base stats</h2>
+          <ul className="stat-list">
+            {pokemon.stats.map(({ base_stat: value, stat }) => (
+              <li key={stat.name}>
+                <span>{capitalize(stat.name)}</span><b>{value}</b>
+                <i><span style={{ width: `${Math.min((value / 180) * 100, 100)}%` }} /></i>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="ability-panel">
+          <p className="eyebrow">Training notes</p>
+          <h2>Abilities</h2>
+          <ul>
+            {pokemon.abilities.map(({ ability, is_hidden: hidden }) => (
+              <li key={ability.name}><span>{capitalize(ability.name)}</span>{hidden && <small>Hidden</small>}</li>
+            ))}
+          </ul>
+          <div className="total-stat"><span>Total base stats</span><strong>{total}</strong></div>
+        </div>
+      </section>
     </article>
   );
 }

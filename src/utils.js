@@ -1,7 +1,8 @@
 import { SPRITE_BASE_URL } from "./config.js";
 
 export function getIdFromUrl(url) {
-  return Number(url.split("/").filter(Boolean).at(-1));
+  const parts = url.split("/").filter(Boolean);
+  return Number(parts.at(-1));
 }
 
 export function capitalize(value = "") {

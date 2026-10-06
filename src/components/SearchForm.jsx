@@ -18,13 +18,21 @@ function SearchForm() {
   }
 
   return (
-    <section className="search">
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="pokemon-search">Search by name or number</label>
-        <div><input id="pokemon-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try Pikachu or 25" /><button type="submit">Search</button></div>
+    <div className="search-wrap">
+      <form className="search-form" onSubmit={handleSubmit} role="search">
+        <label className="sr-only" htmlFor="pokemon-search">Search Pokémon</label>
+        <span className="search-icon" aria-hidden="true">⌕</span>
+        <input
+          id="pokemon-search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Try Pikachu or 25"
+          autoComplete="off"
+        />
+        <button type="submit">Search</button>
       </form>
-      {error && <p className="status status-error" role="alert">{error}</p>}
-    </section>
+      {error && <p className="form-error" role="alert">{error}</p>}
+    </div>
   );
 }
 
