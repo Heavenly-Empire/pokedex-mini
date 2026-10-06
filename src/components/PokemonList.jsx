@@ -6,15 +6,32 @@ function getIdFromUrl(url) {
 
 function PokemonList() {
   const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    let isCurrent = true;
+
     async function loadPokemons() {
-      const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
-      const data = await response.json();
-      setPokemons(data.results);
+      setIsLoading(true);
+      setError("");
+      try {
+        const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+        if (!response.ok) throw new Error(`Server responded with status ${response.status}`);
+        const data = await response.json();
+        if (isCurrent) setPokemons(data.results);
+      } catch (requestError) {
+        if (isCurrent) setError(requestError.message);
+      } finally {
+        if (isCurrent) setIsLoading(false);
+      }
     }
     loadPokemons();
+    return () => { isCurrent = false; };
   }, []);
+
+  if (isLoading) return <p className="status">Loading Pokémon…</p>;
+  if (error) return <p className="status status-error">Couldn’t load the list: {error}</p>;
 
   return (
     <ul className="pokemon-list">
