@@ -23,6 +23,8 @@ body::before {
 a { color: inherit; }
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+.search-form:focus-within, .filter-control:focus-within { outline: 3px solid var(--red); outline-offset: 4px; }
 img { display: block; max-width: 100%; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
@@ -105,6 +107,7 @@ img { display: block; max-width: 100%; }
 .favorite-button span { color: var(--red); font-size: 1.05rem; line-height: 1; }
 .favorite-button:hover { transform: translateY(-2px); background: rgba(255,255,255,.65); }
 .favorite-button.is-favorite { border-color: color-mix(in srgb, var(--red) 45%, transparent); background: color-mix(in srgb, var(--red) 11%, white); }
+.favorite-error { color: #b5232b; font-size: .85rem; line-height: 1.5; }
 .quick-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 45px 0 0; }
 .quick-facts div { padding-top: 13px; border-top: 1px solid rgba(0,0,0,.16); }
 .quick-facts dt { color: #706a64; font-size: .74rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
