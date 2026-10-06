@@ -22,3 +22,9 @@ h1 { color: #d9363e; }
 .pokemon-list strong { text-transform: capitalize; }
 .status { padding: 28px; text-align: center; color: #6d6760; }
 .status-error { color: #b5232b; }
+.search { margin: 28px 0; }
+.search label { display: block; margin-bottom: 8px; font-weight: 700; }
+.search form > div { display: flex; gap: 8px; }
+.search input { flex: 1; min-width: 0; padding: 12px; border: 1px solid #bbb; border-radius: 8px; }
+.search button { border: 0; border-radius: 8px; padding: 0 20px; background: #202022; color: white; font-weight: 700; }
+.search-result { display: flex; align-items: center; gap: 12px; text-transform: capitalize; }
