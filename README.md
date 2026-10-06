@@ -65,7 +65,6 @@ The finished app extends the tutorial's initial 20-entry list to 151 entries and
 
 ```bash
 npm run lint
-npm test
 npm run build
 npm run preview
 ```
