@@ -62,7 +62,7 @@ function DetailPage() {
 
   return (
     <article className={`detail-page type-${pokemon.types[0].type.name}`}>
-      <Link to="/" className="back-link">← Back to Kanto</Link>
+      <Link to="/" className="back-link">← Back</Link>
       <div className="detail-hero">
         <div className="detail-copy">
           <p className="eyebrow">Pokédex entry {formatId(pokemon.id)}</p>
@@ -81,7 +81,7 @@ function DetailPage() {
           </dl>
         </div>
         <div className="artwork-stage">
-          <span>{formatId(pokemon.id)}</span>
+          
           <img src={artwork} alt={pokemon.name} width="430" height="430" />
         </div>
       </div>
