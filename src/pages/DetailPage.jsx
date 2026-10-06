@@ -2,19 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { API_BASE_URL } from "../config.js";
 import { capitalize, formatId } from "../utils.js";
+import { readFavorites, saveFavorites } from "../favorites.js";
 
 function DetailPage() {
   const { name } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [favorites, setFavorites] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("pokedex-favorites")) ?? [];
-    } catch {
-      return [];
-    }
-  });
+  const [favorites, setFavorites] = useState(() => readFavorites());
+  const [favoriteError, setFavoriteError] = useState("");
 
   useEffect(() => {
     let isCurrent = true;
@@ -23,6 +19,7 @@ function DetailPage() {
       setIsLoading(true);
       setError("");
       setPokemon(null);
+      setFavoriteError("");
       try {
         const response = await fetch(`${API_BASE_URL}/pokemon/${name}`);
         if (!response.ok) throw new Error(`No Pokémon named “${name}” was found.`);
@@ -53,11 +50,18 @@ function DetailPage() {
   const isFavorite = favorites.includes(pokemon.id);
 
   function toggleFavorite() {
-    const nextFavorites = isFavorite
-      ? favorites.filter((id) => id !== pokemon.id)
-      : [...favorites, pokemon.id];
-    setFavorites(nextFavorites);
-    localStorage.setItem("pokedex-favorites", JSON.stringify(nextFavorites));
+    const currentFavorites = readFavorites();
+    const currentlySaved = currentFavorites.includes(pokemon.id);
+    const nextFavorites = currentlySaved
+      ? currentFavorites.filter((id) => id !== pokemon.id)
+      : [...currentFavorites, pokemon.id];
+    if (saveFavorites(nextFavorites)) {
+      setFavorites(nextFavorites);
+      setFavoriteError("");
+    } else {
+      setFavorites(currentFavorites);
+      setFavoriteError("Couldn't save this change. Allow browser storage and try again.");
+    }
   }
 
   return (
@@ -74,6 +78,7 @@ function DetailPage() {
             <span aria-hidden="true">{isFavorite ? "♥" : "♡"}</span>
             {isFavorite ? "Saved to favorites" : "Save favorite"}
           </button>
+          {favoriteError && <p className="favorite-error" role="alert">{favoriteError}</p>}
           <dl className="quick-facts">
             <div><dt>Height</dt><dd>{pokemon.height / 10} m</dd></div>
             <div><dt>Weight</dt><dd>{pokemon.weight / 10} kg</dd></div>
