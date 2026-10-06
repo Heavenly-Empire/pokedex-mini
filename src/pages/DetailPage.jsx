@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { API_BASE_URL } from "../config.js";
+import { capitalize } from "../utils.js";
 
 function DetailPage() {
   const { name } = useParams();
@@ -13,7 +15,7 @@ function DetailPage() {
       setIsLoading(true);
       setError("");
       try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+        const response = await fetch(`${API_BASE_URL}/pokemon/${name}`);
         if (!response.ok) throw new Error(`No Pokémon named “${name}” was found.`);
         const data = await response.json();
         if (isCurrent) setPokemon(data);
@@ -34,7 +36,7 @@ function DetailPage() {
     <article className="detail">
       <Link to="/">← Back to list</Link>
       <img src={pokemon.sprites.other["official-artwork"].front_default} alt={pokemon.name} width="260" height="260" />
-      <h2>{pokemon.name}</h2>
+      <h2>{capitalize(pokemon.name)}</h2>
       <p>{pokemon.types.map(({ type }) => type.name).join(", ")}</p>
       <ul>{pokemon.stats.map(({ base_stat: value, stat }) => <li key={stat.name}><span>{stat.name}</span><strong>{value}</strong></li>)}</ul>
     </article>

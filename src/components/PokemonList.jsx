@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-function getIdFromUrl(url) {
-  return url.split("/").filter(Boolean).at(-1);
-}
+import { API_BASE_URL, POKEMON_LIMIT } from "../config.js";
+import { getIdFromUrl, getSpriteUrl, formatId } from "../utils.js";
 
 function PokemonList() {
   const [pokemons, setPokemons] = useState([]);
@@ -17,7 +15,7 @@ function PokemonList() {
       setIsLoading(true);
       setError("");
       try {
-        const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+        const response = await fetch(`${API_BASE_URL}/pokemon?limit=${POKEMON_LIMIT}`);
         if (!response.ok) throw new Error(`Server responded with status ${response.status}`);
         const data = await response.json();
         if (isCurrent) setPokemons(data.results);
@@ -41,8 +39,8 @@ function PokemonList() {
         return (
           <li key={pokemon.name}>
             <Link to={`/pokemon/${pokemon.name}`}>
-              <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`} alt="" width="64" height="64" />
-              <span>#{id.padStart(3, "0")}</span>
+              <img src={getSpriteUrl(id)} alt="" width="64" height="64" />
+              <span>{formatId(id)}</span>
               <strong>{pokemon.name}</strong>
             </Link>
           </li>

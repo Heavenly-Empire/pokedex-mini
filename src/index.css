@@ -35,3 +35,4 @@ h1 { color: #d9363e; }
 .detail h2, .detail p { text-transform: capitalize; }
 .detail ul { max-width: 360px; margin: 24px auto; padding: 0; list-style: none; }
 .detail li { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #ddd; text-transform: capitalize; }
+footer { margin-top: 48px; padding: 24px 0; border-top: 1px solid #ddd; color: #777; font-size: .8rem; }
