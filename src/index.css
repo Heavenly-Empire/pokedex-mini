@@ -75,7 +75,11 @@ img { display: block; max-width: 100%; }
 .pokemon-card a:hover { transform: translateY(-7px); background: white; box-shadow: var(--shadow); }
 .pokemon-card a:hover::before { transform: scale(1.1); }
 .card-number { align-self: flex-end; color: #928d86; font: 700 .78rem "Figtree"; letter-spacing: .08em; }
-.pokemon-card img { position: relative; width: 180px; height: 180px; margin: 0 auto 6px; object-fit: contain; filter: drop-shadow(0 17px 13px rgba(58,44,31,.14)); transition: transform .3s; }
+.pokemon-card img { position: relative; width: 180px; height: 180px; margin: 0 auto 6px; object-fit: contain; filter: drop-shadow(0 17px 13px rgba(58,44,31,.14)); transition: transform .3s; animation: pokemon-float 4.8s ease-in-out infinite; }
+.pokemon-card:nth-child(3n + 2) img { animation-duration: 5.6s; animation-delay: -1.8s; }
+.pokemon-card:nth-child(3n) img { animation-duration: 6.2s; animation-delay: -3.4s; }
+.pokemon-card a:is(:hover, :focus-visible) img { animation-name: pokemon-greet; animation-duration: 1.2s; }
+.pokemon-card a:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
 .pokemon-card a:hover img { transform: translateY(-5px) scale(1.04); }
 .card-name { font: 800 1.42rem "Figtree"; letter-spacing: -.035em; }
 .card-cta { margin-top: 7px; color: #7b756f; font-size: .82rem; font-weight: 700; }
@@ -108,7 +112,7 @@ img { display: block; max-width: 100%; }
 .artwork-stage { position: relative; align-self: stretch; display: grid; place-items: center; overflow: hidden; }
 .artwork-stage::before { content: ""; position: absolute; width: 390px; height: 390px; border: 1px solid color-mix(in srgb, var(--type) 55%, transparent); border-radius: 50%; box-shadow: 0 0 0 55px rgba(255,255,255,.16), 0 0 0 56px color-mix(in srgb, var(--type) 20%, transparent); }
 
-.artwork-stage img { position: relative; z-index: 1; width: min(430px, 85%); height: min(430px, 85%); object-fit: contain; filter: drop-shadow(0 30px 28px rgba(50,38,32,.2)); animation: detail-in .7s both; }
+.artwork-stage img { position: relative; z-index: 1; width: min(430px, 85%); height: min(430px, 85%); object-fit: contain; filter: drop-shadow(0 30px 28px rgba(50,38,32,.2)); animation: detail-in .7s both, pokemon-float 5.6s .7s ease-in-out infinite; }
 .detail-data { display: grid; grid-template-columns: 1.35fr .65fr; gap: 70px; padding: 80px 5% 20px; }
 .stat-list { list-style: none; margin: 30px 0 0; padding: 0; }
 .stat-list li { display: grid; grid-template-columns: 140px 45px 1fr; align-items: center; gap: 15px; padding: 10px 0; }
@@ -137,6 +141,15 @@ footer a { font-weight: 800; }
 @keyframes card-in { from { opacity: 0; transform: translateY(18px); } }
 @keyframes detail-in { from { opacity: 0; transform: translateY(30px) scale(.9); } }
 @keyframes stat-grow { from { transform: scaleX(0); } }
+@keyframes pokemon-float {
+  0%, 100% { translate: 0 0; rotate: -1deg; }
+  50% { translate: 0 -8px; rotate: 1deg; }
+}
+@keyframes pokemon-greet {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  30% { translate: 0 -12px; rotate: -4deg; }
+  65% { translate: 0 -5px; rotate: 3deg; }
+}
 
 @media (max-width: 950px) {
   .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 65px; }
@@ -177,5 +190,6 @@ footer a { font-weight: 800; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pokemon-card img, .artwork-stage img { animation: none !important; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
